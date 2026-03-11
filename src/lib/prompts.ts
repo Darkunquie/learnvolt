@@ -7,6 +7,7 @@ export interface ToolConfig {
   promptTemplate: string;
   icon: string;
   category: "student" | "writing";
+  supportsPdf?: boolean;
   fields?: {
     name: string;
     label: string;
@@ -98,6 +99,7 @@ export const tools: ToolConfig[] = [
     placeholder: "Paste your notes or lecture content here...",
     icon: "📋",
     category: "student",
+    supportsPdf: true,
     fields: [
       {
         name: "format",
@@ -154,6 +156,7 @@ export const tools: ToolConfig[] = [
     placeholder: "Type or paste your homework question here...",
     icon: "🎓",
     category: "student",
+    supportsPdf: true,
     fields: [
       {
         name: "subject",
@@ -247,6 +250,7 @@ export const tools: ToolConfig[] = [
     placeholder: "Enter a topic or paste your study material...",
     icon: "🃏",
     category: "student",
+    supportsPdf: true,
     fields: [
       {
         name: "count",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { ToolConfig } from "@/lib/prompts";
 import {
   getRemainingUses,
@@ -24,9 +24,32 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
     return defaults;
   });
 
+  // PDF upload state
+  const [inputMode, setInputMode] = useState<"text" | "pdf">("text");
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (file: File) => {
+    if (file.type !== "application/pdf") {
+      setError("Please upload a valid PDF file.");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError("File is too large. Maximum size is 10MB.");
+      return;
+    }
+    setError("");
+    setPdfFile(file);
+  };
+
   const generate = async () => {
-    if (!input.trim()) {
+    if (inputMode === "text" && !input.trim()) {
       setError("Please enter some text first.");
+      return;
+    }
+    if (inputMode === "pdf" && !pdfFile) {
+      setError("Please upload a PDF file first.");
       return;
     }
 
@@ -42,11 +65,26 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
     setResult("");
 
     try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ toolSlug: tool.slug, input, fields }),
-      });
+      let res: Response;
+
+      if (inputMode === "pdf" && pdfFile) {
+        const formData = new FormData();
+        formData.append("toolSlug", tool.slug);
+        formData.append("pdf", pdfFile);
+        for (const [key, value] of Object.entries(fields)) {
+          formData.append(`field_${key}`, value);
+        }
+        res = await fetch("/api/generate", {
+          method: "POST",
+          body: formData,
+        });
+      } else {
+        res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ toolSlug: tool.slug, input, fields }),
+        });
+      }
 
       const data = await res.json();
 
@@ -70,6 +108,8 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const isDisabled = loading || (inputMode === "text" ? !input.trim() : !pdfFile);
 
   return (
     <div>
@@ -107,19 +147,137 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
 
       {/* Input section */}
       <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-6">
-        <div className="relative">
-          <textarea
-            className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.05] p-4 text-white placeholder-white/30 transition-all focus:border-violet-500/50 focus:bg-white/[0.08] focus:outline-none focus:ring-2 focus:ring-violet-500/20"
-            rows={5}
-            placeholder={tool.placeholder}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            maxLength={5000}
-          />
-          <span className="absolute bottom-3 right-3 text-xs text-white/30">
-            {input.length}/5000
-          </span>
-        </div>
+        {/* Input mode toggle — only when tool supports PDF */}
+        {tool.supportsPdf && (
+          <div className="mb-4 flex rounded-lg border border-white/10 bg-white/[0.03] p-1">
+            <button
+              type="button"
+              onClick={() => {
+                setInputMode("text");
+                setPdfFile(null);
+                setError("");
+              }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all ${
+                inputMode === "text"
+                  ? "bg-white/[0.1] text-white shadow-sm"
+                  : "text-white/40 hover:text-white/60"
+              }`}
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+              </svg>
+              Paste Text
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setInputMode("pdf");
+                setInput("");
+                setError("");
+              }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-all ${
+                inputMode === "pdf"
+                  ? "bg-white/[0.1] text-white shadow-sm"
+                  : "text-white/40 hover:text-white/60"
+              }`}
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+              </svg>
+              Upload PDF
+            </button>
+          </div>
+        )}
+
+        {/* Text input mode */}
+        {inputMode === "text" && (
+          <div className="relative">
+            <textarea
+              className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.05] p-4 text-white placeholder-white/30 transition-all focus:border-violet-500/50 focus:bg-white/[0.08] focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+              rows={5}
+              placeholder={tool.placeholder}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              maxLength={5000}
+            />
+            <span className="absolute bottom-3 right-3 text-xs text-white/30">
+              {input.length}/5000
+            </span>
+          </div>
+        )}
+
+        {/* PDF upload mode */}
+        {inputMode === "pdf" && (
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragActive(true);
+            }}
+            onDragLeave={() => setDragActive(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragActive(false);
+              const file = e.dataTransfer.files[0];
+              if (file) handleFileSelect(file);
+            }}
+            onClick={() => fileInputRef.current?.click()}
+            className={`relative flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed transition-all ${
+              dragActive
+                ? "border-violet-500 bg-violet-500/10"
+                : pdfFile
+                  ? "border-green-500/30 bg-green-500/5"
+                  : "border-white/20 bg-white/[0.03] hover:border-white/30 hover:bg-white/[0.05]"
+            }`}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,application/pdf"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleFileSelect(file);
+              }}
+            />
+            {pdfFile ? (
+              <div className="flex flex-col items-center gap-3 text-center">
+                <svg className="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p className="text-sm font-medium text-white">{pdfFile.name}</p>
+                  <p className="text-xs text-white/40">
+                    {(pdfFile.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPdfFile(null);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  }}
+                  className="rounded-lg border border-white/10 bg-white/[0.08] px-3 py-1.5 text-xs text-white/60 transition-all hover:bg-white/[0.12] hover:text-white"
+                >
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-3 text-center">
+                <svg className="h-12 w-12 text-white/30" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                </svg>
+                <div>
+                  <p className="text-sm text-white/50">
+                    <span className="font-medium text-violet-400">Click to browse</span>{" "}
+                    or drag & drop your PDF
+                  </p>
+                  <p className="mt-1 text-xs text-white/30">PDF files up to 10MB</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Additional fields */}
         {tool.fields && tool.fields.length > 0 && (
@@ -154,7 +312,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
 
         <button
           onClick={generate}
-          disabled={loading || !input.trim()}
+          disabled={isDisabled}
           className="mt-4 w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3.5 font-medium text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.01] hover:shadow-xl hover:shadow-blue-500/30 disabled:cursor-not-allowed disabled:from-white/10 disabled:to-white/10 disabled:text-white/30 disabled:shadow-none"
         >
           {loading ? (
@@ -175,7 +333,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                 />
               </svg>
-              Generating...
+              {inputMode === "pdf" ? "Analyzing PDF..." : "Generating..."}
             </span>
           ) : (
             <span className="flex items-center justify-center gap-2">
