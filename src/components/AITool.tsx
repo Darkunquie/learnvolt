@@ -74,9 +74,9 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
   return (
     <div>
       {/* Usage banner with progress segments */}
-      <div className="mb-6 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
+      <div className="mb-6 rounded-xl border border-white/10 bg-white/[0.05] p-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-blue-800">
+          <span className="text-sm font-medium text-blue-400">
             {remaining > 0
               ? `${remaining} of ${FREE_DAILY_LIMIT} free generations remaining`
               : "Daily free limit reached"}
@@ -84,7 +84,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
           {remaining <= 2 && (
             <a
               href="/pricing"
-              className="text-sm font-semibold text-blue-600 transition-colors hover:text-blue-800"
+              className="text-sm font-semibold text-violet-400 transition-colors hover:text-violet-300"
             >
               Upgrade to Pro
             </a>
@@ -98,7 +98,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
               className={`h-2 flex-1 rounded-full transition-colors ${
                 i < remaining
                   ? "bg-gradient-to-r from-blue-500 to-indigo-500"
-                  : "bg-gray-200"
+                  : "bg-white/10"
               }`}
             />
           ))}
@@ -106,17 +106,17 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
       </div>
 
       {/* Input section */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-6">
         <div className="relative">
           <textarea
-            className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-4 text-gray-900 placeholder-gray-400 transition-all focus:border-blue-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+            className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.05] p-4 text-white placeholder-white/30 transition-all focus:border-violet-500/50 focus:bg-white/[0.08] focus:outline-none focus:ring-2 focus:ring-violet-500/20"
             rows={5}
             placeholder={tool.placeholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             maxLength={5000}
           />
-          <span className="absolute bottom-3 right-3 text-xs text-gray-400">
+          <span className="absolute bottom-3 right-3 text-xs text-white/30">
             {input.length}/5000
           </span>
         </div>
@@ -126,12 +126,12 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
           <div className="mt-4 flex flex-wrap gap-4">
             {tool.fields.map((field) => (
               <div key={field.name} className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                <label className="text-xs font-semibold uppercase tracking-wide text-white/50">
                   {field.label}
                 </label>
                 {field.type === "select" && field.options && (
                   <select
-                    className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 transition-colors focus:border-blue-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400/20"
+                    className="rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-sm text-white/70 transition-colors focus:border-violet-500/50 focus:bg-white/[0.08] focus:outline-none focus:ring-2 focus:ring-violet-500/20"
                     value={fields[field.name] || ""}
                     onChange={(e) =>
                       setFields((prev) => ({
@@ -141,7 +141,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
                     }
                   >
                     {field.options.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
+                      <option key={opt.value} value={opt.value} className="bg-[#0a1628] text-white">
                         {opt.label}
                       </option>
                     ))}
@@ -155,7 +155,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
         <button
           onClick={generate}
           disabled={loading || !input.trim()}
-          className="mt-4 w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3.5 font-medium text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.01] hover:shadow-xl hover:shadow-blue-500/30 disabled:cursor-not-allowed disabled:from-gray-300 disabled:to-gray-300 disabled:shadow-none"
+          className="mt-4 w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3.5 font-medium text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.01] hover:shadow-xl hover:shadow-blue-500/30 disabled:cursor-not-allowed disabled:from-white/10 disabled:to-white/10 disabled:text-white/30 disabled:shadow-none"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -190,19 +190,19 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
 
       {/* Error */}
       {error && (
-        <div className="mt-4 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
-          <svg className="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+        <div className="mt-4 flex items-start gap-3 rounded-xl border border-red-500/30 bg-red-500/10 p-4">
+          <svg className="mt-0.5 h-5 w-5 shrink-0 text-red-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
           </svg>
-          <span className="text-sm text-red-700">{error}</span>
+          <span className="text-sm text-red-400">{error}</span>
         </div>
       )}
 
       {/* Result */}
       {result && (
-        <div className="mt-6 animate-fade-in-up rounded-2xl border border-gray-200 bg-white p-6 shadow-sm" style={{ borderLeft: "4px solid #22c55e" }}>
+        <div className="mt-6 animate-fade-in-up rounded-2xl border border-white/10 bg-white/[0.05] p-6" style={{ borderLeft: "4px solid #22c55e" }}>
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+            <h3 className="flex items-center gap-2 text-sm font-semibold text-white">
               <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -210,7 +210,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
             </h3>
             <button
               onClick={copyToClipboard}
-              className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 transition-all hover:bg-gray-100"
+              className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-white/60 transition-all hover:bg-white/[0.12] hover:text-white"
             >
               {copied ? (
                 <>
@@ -229,7 +229,7 @@ export default function AITool({ tool }: { tool: ToolConfig }) {
               )}
             </button>
           </div>
-          <div className="whitespace-pre-wrap leading-relaxed text-gray-700">
+          <div className="whitespace-pre-wrap leading-relaxed text-white/70">
             {result}
           </div>
         </div>
