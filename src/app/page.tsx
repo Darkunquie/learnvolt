@@ -202,9 +202,9 @@ export default function Home() {
       </section>
 
       {/* Stats - Editorial */}
-      <section className="py-24 px-8 bg-[#0a1628]">
+      <section className="py-16 px-8 bg-[#0a1628]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10">
-          <div className="flex-1 py-12 md:px-12">
+          <div className="flex-1 py-8 md:px-12">
             <div className="text-[80px] font-extrabold tracking-tighter bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent leading-none mb-4">
               05
             </div>
@@ -212,7 +212,7 @@ export default function Home() {
               AI Engines
             </p>
           </div>
-          <div className="flex-1 py-12 md:px-12">
+          <div className="flex-1 py-8 md:px-12">
             <div className="text-[80px] font-extrabold tracking-tighter bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent leading-none mb-4">
               5.0
             </div>
@@ -220,7 +220,7 @@ export default function Home() {
               Daily Sessions
             </p>
           </div>
-          <div className="flex-1 py-12 md:px-12">
+          <div className="flex-1 py-8 md:px-12">
             <div className="text-[80px] font-extrabold tracking-tighter bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent leading-none mb-4">
               MS
             </div>
@@ -231,14 +231,102 @@ export default function Home() {
         </div>
       </section>
 
+      {/* How It Works */}
+      <section className="py-24 px-8 bg-[#060b18]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white uppercase mb-16 text-center">
+            How It Works.
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">1</span>
+              </div>
+              <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-3">Choose a Tool</h3>
+              <p className="text-white/40 text-sm leading-relaxed">Pick from our suite of AI-powered study instruments — essays, summaries, flashcards, and more.</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">2</span>
+              </div>
+              <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-3">Enter Your Prompt</h3>
+              <p className="text-white/40 text-sm leading-relaxed">Describe what you need — a topic, your notes, a question — and let AI do the heavy lifting.</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6">
+                <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">3</span>
+              </div>
+              <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-3">Get Results Instantly</h3>
+              <p className="text-white/40 text-sm leading-relaxed">Receive polished, well-structured output in seconds. Copy, edit, or regenerate as needed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials / Social Proof */}
+      <section className="py-20 px-8 bg-[#0a1628]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-white/40 text-center mb-12">
+            What Students Are Saying
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-violet-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                ))}
+              </div>
+              <p className="text-white/60 text-sm leading-relaxed mb-6">&ldquo;LearnVolt saved me hours on my research paper. The essay generator gave me a solid outline and I just refined it from there.&rdquo;</p>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-violet-500" />
+                <div>
+                  <p className="text-white text-sm font-semibold">Sarah K.</p>
+                  <p className="text-white/30 text-xs">University Student</p>
+                </div>
+              </div>
+            </div>
+            <div className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-violet-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                ))}
+              </div>
+              <p className="text-white/60 text-sm leading-relaxed mb-6">&ldquo;The flashcard generator is incredible. I used to spend an hour making cards manually — now it takes 30 seconds.&rdquo;</p>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-pink-500" />
+                <div>
+                  <p className="text-white text-sm font-semibold">Marcus T.</p>
+                  <p className="text-white/30 text-xs">High School Senior</p>
+                </div>
+              </div>
+            </div>
+            <div className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-violet-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                ))}
+              </div>
+              <p className="text-white/60 text-sm leading-relaxed mb-6">&ldquo;I use the homework solver almost daily. It doesn&apos;t just give answers — it explains the steps so I actually learn.&rdquo;</p>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400" />
+                <div>
+                  <p className="text-white text-sm font-semibold">Priya M.</p>
+                  <p className="text-white/30 text-xs">Graduate Student</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA - Editorial */}
-      <section className="py-40 px-8 text-center bg-[#060b18] relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-blue-500 to-violet-500" />
+      <section className="py-24 px-8 text-center bg-[#060b18] relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-blue-500 to-violet-500" />
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-6xl md:text-8xl font-extrabold mb-12 tracking-tighter uppercase text-white">
+          <h2 className="text-6xl md:text-8xl font-extrabold mb-8 tracking-tighter uppercase text-white">
             Ready to Transform?
           </h2>
-          <p className="text-white/50 text-xl font-light mb-16 max-w-xl mx-auto">
+          <p className="text-white/50 text-xl font-light mb-12 max-w-xl mx-auto">
             Join a new generation of learners who prioritize deep understanding
             and creative breakthrough.
           </p>

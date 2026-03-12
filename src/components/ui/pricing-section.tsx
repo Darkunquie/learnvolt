@@ -144,7 +144,7 @@ export default function PricingSection() {
 
   return (
     <div
-      className="px-4 pt-20 min-h-[80vh] mx-auto relative bg-[#0a1628] rounded-3xl"
+      className="px-4 pt-8 min-h-[80vh] mx-auto relative bg-[#0a1628] rounded-3xl"
       ref={pricingRef}
     >
       <div
