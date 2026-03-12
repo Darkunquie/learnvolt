@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "LearnVolt - Free AI Tools for Students",
   description:
     "Free AI-powered study tools: essay generator, notes summarizer, homework solver, flashcard generator, and more. Learn faster with AI.",
-  metadataBase: new URL("https://learnvolt.com"),
+  metadataBase: new URL("https://learnvolt.vercel.app"),
 };
 
 export default function RootLayout({
