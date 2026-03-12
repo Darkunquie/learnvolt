@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { tools } from "@/lib/prompts";
+import Image from "next/image";
+import { tools, type ToolConfig } from "@/lib/prompts";
 import type { Metadata } from "next";
 import { HeroSection } from "@/components/ui/hero-section";
 import { GlassCTA } from "@/components/ui/glass-cta";
@@ -19,21 +20,22 @@ export const metadata: Metadata = {
   },
 };
 
-const toolIcons: Record<string, React.ReactNode> = {
-  "essay-generator": <BookOpen className="w-10 h-10" />,
-  "notes-summarizer": <BrainCircuit className="w-10 h-10" />,
-  "homework-solver": <GraduationCap className="w-10 h-10" />,
-  "email-writer": <Mail className="w-10 h-10" />,
-  "flashcard-generator": <Layers className="w-10 h-10" />,
-};
-
+function getToolOrThrow(slug: string): ToolConfig {
+  const tool = tools.find((t) => t.slug === slug);
+  if (!tool) {
+    throw new Error(
+      `Tool "${slug}" not found. Available: ${tools.map((t) => t.slug).join(", ")}`
+    );
+  }
+  return tool;
+}
 
 export default function Home() {
-  const featuredTool = tools.find((t) => t.slug === "essay-generator")!;
-  const notesTool = tools.find((t) => t.slug === "notes-summarizer")!;
-  const homeworkTool = tools.find((t) => t.slug === "homework-solver")!;
-  const flashcardTool = tools.find((t) => t.slug === "flashcard-generator")!;
-  const emailTool = tools.find((t) => t.slug === "email-writer")!;
+  const featuredTool = getToolOrThrow("essay-generator");
+  const notesTool = getToolOrThrow("notes-summarizer");
+  const homeworkTool = getToolOrThrow("homework-solver");
+  const flashcardTool = getToolOrThrow("flashcard-generator");
+  const emailTool = getToolOrThrow("email-writer");
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -74,10 +76,12 @@ export default function Home() {
             <TimelineContent animationNum={2} className="md:col-span-2 md:row-span-2">
               <Link href={`/tools/${featuredTool.slug}`} className="group block h-full">
                 <div className="relative h-full min-h-[400px] md:min-h-0 rounded-2xl overflow-hidden bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:-translate-y-1 hover:border-violet-500/30 hover:shadow-[0_0_40px_-5px_rgba(139,92,246,0.3)] transition-all duration-300">
-                  <img
+                  <Image
                     src="/images/study-card.png"
                     alt="AI Essay Generator"
-                    className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 66vw"
+                    className="object-cover opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-[#060b18]/80 to-[#060b18]/40" />
                   <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
@@ -172,10 +176,12 @@ export default function Home() {
             <TimelineContent animationNum={6} className="md:col-span-2">
               <Link href={`/tools/${emailTool.slug}`} className="group block h-full">
                 <div className="relative h-full min-h-[220px] rounded-2xl overflow-hidden bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] hover:-translate-y-1 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.3)] transition-all duration-300">
-                  <img
+                  <Image
                     src="/images/writing-card.png"
                     alt="AI Email Writer"
-                    className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 66vw"
+                    className="object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-[#060b18] via-[#060b18]/80 to-[#060b18]/40" />
                   <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-10">

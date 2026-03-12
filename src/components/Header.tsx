@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Header() {
@@ -24,16 +25,16 @@ export default function Header() {
 
   return (
     <header
-      className={`glass-header fixed left-1/2 -translate-x-1/2 z-50 w-[min(92%,1200px)] transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
+      className={`glass-header fixed left-1/2 -translate-x-1/2 z-50 w-[min(92%,1100px)] transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
         hidden && !menuOpen ? "-translate-y-[calc(100%+32px)]" : ""
       } ${
-        scrolled ? "top-2 glass-header-scrolled" : "top-4"
+        scrolled ? "top-1.5 glass-header-scrolled" : "top-2.5"
       }`}
     >
-      <div className="flex items-center justify-between px-7 py-3">
+      <div className="flex items-center justify-between px-6 py-2">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/images/logo.png" alt="LearnVolt" className="h-[42px] w-[42px] -my-[8px] object-cover scale-[1.8]" />
-          <span className="text-[1.8rem] font-extrabold text-white tracking-tight" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
+          <Image src="/images/logo.png" alt="LearnVolt" width={32} height={32} className="object-cover scale-[1.6]" priority />
+          <span className="text-[1.6rem] font-extrabold text-white tracking-tight" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
             LearnVolt
           </span>
         </Link>
@@ -44,7 +45,7 @@ export default function Header() {
             <li>
               <Link
                 href="/#tools"
-                className="text-white/85 text-[0.95rem] font-medium px-4 py-2 rounded-xl transition-all duration-300 hover:bg-white/15 hover:text-white"
+                className="text-white/85 text-[0.95rem] font-medium px-4 py-2 rounded-md transition-all duration-300 hover:bg-white/15 hover:text-white"
               >
                 Tools
               </Link>
@@ -52,7 +53,7 @@ export default function Header() {
             <li>
               <Link
                 href="/pricing"
-                className="text-white/85 text-[0.95rem] font-medium px-4 py-2 rounded-xl transition-all duration-300 hover:bg-white/15 hover:text-white"
+                className="text-white/85 text-[0.95rem] font-medium px-4 py-2 rounded-md transition-all duration-300 hover:bg-white/15 hover:text-white"
               >
                 Pricing
               </Link>
@@ -60,10 +61,11 @@ export default function Header() {
           </ul>
         </nav>
 
-        <Link href="/pricing" className="hidden md:block">
-          <button className="glass-cta px-5 py-2.5 rounded-[14px] text-[0.9rem] font-semibold text-[#1a1a2e] bg-white/75 backdrop-blur-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.1)] border-none cursor-pointer transition-all duration-300 hover:bg-white/95 hover:scale-[1.04]">
-            Go Pro
-          </button>
+        <Link
+          href="/pricing"
+          className="hidden md:inline-block glass-cta px-5 py-2 rounded-[12px] text-[0.9rem] font-semibold text-[#1a1a2e] bg-white/75 backdrop-blur-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.1)] border-none cursor-pointer transition-all duration-300 hover:bg-white/95 hover:scale-[1.04]"
+        >
+          Go Pro
         </Link>
 
         {/* Mobile hamburger */}
@@ -101,10 +103,12 @@ export default function Header() {
           >
             Pricing
           </Link>
-          <Link href="/pricing" onClick={() => setMenuOpen(false)}>
-            <button className="mt-2 w-full px-4 py-3 rounded-[14px] text-[0.9rem] font-semibold text-[#1a1a2e] bg-white/75 backdrop-blur-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.1)] border-none cursor-pointer transition-all duration-300 hover:bg-white/95">
-              Go Pro
-            </button>
+          <Link
+            href="/pricing"
+            onClick={() => setMenuOpen(false)}
+            className="mt-2 block w-full px-4 py-3 rounded-[14px] text-center text-[0.9rem] font-semibold text-[#1a1a2e] bg-white/75 backdrop-blur-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.1)] border-none cursor-pointer transition-all duration-300 hover:bg-white/95"
+          >
+            Go Pro
           </Link>
         </nav>
       )}

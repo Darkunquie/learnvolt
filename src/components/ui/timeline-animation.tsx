@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, type ElementType, type ReactNode } from "react";
+import React, { useRef, type ReactNode } from "react";
 import { motion, useInView, type Variants } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -9,8 +9,20 @@ const defaultVariants: Variants = {
   visible: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
 
+// Pre-built motion components — avoids creating components during render
+const motionComponents = {
+  div: motion.div,
+  p: motion.p,
+  h2: motion.h2,
+  h3: motion.h3,
+  span: motion.span,
+  section: motion.section,
+} as const;
+
+type SupportedElement = keyof typeof motionComponents;
+
 interface TimelineContentProps {
-  as?: ElementType;
+  as?: SupportedElement;
   children: ReactNode;
   animationNum: number;
   timelineRef?: React.RefObject<HTMLElement | null>;
@@ -19,7 +31,7 @@ interface TimelineContentProps {
 }
 
 export function TimelineContent({
-  as: Component = "div",
+  as = "div",
   children,
   animationNum,
   timelineRef,
@@ -34,7 +46,7 @@ export function TimelineContent({
   });
 
   const variants = customVariants || defaultVariants;
-  const MotionComponent = motion.create(Component);
+  const MotionComponent = motionComponents[as];
 
   return (
     <MotionComponent

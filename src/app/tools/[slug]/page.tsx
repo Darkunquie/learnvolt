@@ -232,7 +232,7 @@ export default async function ToolPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      <div className="mx-auto max-w-4xl px-4 py-10 bg-[#060b18]">
+      <div className="mx-auto max-w-4xl px-4 pt-28 pb-10 bg-[#060b18]">
         {/* Breadcrumb */}
         <nav className="mb-6 text-sm text-white/40">
           <Link href="/" className="transition-colors hover:text-violet-400">Home</Link>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="bg-[#060b18] min-h-screen pt-8">
+    <div className="bg-[#060b18] min-h-screen pt-28">
       <PricingSection />
 
       {/* FAQ */}
