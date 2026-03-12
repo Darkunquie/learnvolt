@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { tools, getToolBySlug } from "@/lib/prompts";
 import AITool from "@/components/AITool";
+import { ToolSparkles } from "@/components/ui/tool-sparkles";
 
 /* ─── Custom SVG illustration icons with gradients ─── */
 
@@ -241,19 +242,24 @@ export default async function ToolPage({ params }: PageProps) {
           <span className="font-medium text-white/70">{tool.title}</span>
         </nav>
 
-        {/* Hero */}
-        <div className="mb-8 animate-fade-in-up text-center">
-          <div className="flex justify-center">
-            <ToolIconBadge slug={tool.slug} size="lg" />
-          </div>
-          <h1 className="mt-5 text-4xl font-bold text-white">
-            {tool.title}
-          </h1>
-          <p className="mt-3 text-lg text-white/50">{tool.description}</p>
-        </div>
+        {/* Hero + Tool with sparkle background */}
+        <div className="relative">
+          <ToolSparkles />
+          <div className="relative z-10">
+            <div className="mb-8 animate-fade-in-up text-center">
+              <div className="flex justify-center">
+                <ToolIconBadge slug={tool.slug} size="lg" />
+              </div>
+              <h1 className="mt-5 text-4xl font-bold text-white">
+                {tool.title}
+              </h1>
+              <p className="mt-3 text-lg text-white/50">{tool.description}</p>
+            </div>
 
-        {/* Tool */}
-        <AITool tool={tool} />
+            {/* Tool */}
+            <AITool tool={tool} />
+          </div>
+        </div>
 
         {/* Examples */}
         {tool.examples.length > 0 && (
