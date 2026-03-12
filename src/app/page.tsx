@@ -6,6 +6,7 @@ import { HeroSection } from "@/components/ui/hero-section";
 import { GlassCTA } from "@/components/ui/glass-cta";
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import { BookOpen, BrainCircuit, GraduationCap, Mail, Layers, ArrowRight } from "lucide-react";
+import { StatsSparkles } from "@/components/ui/stats-sparkles";
 
 export const metadata: Metadata = {
   title: "LearnVolt - Free AI Tools for Students",
@@ -208,30 +209,31 @@ export default function Home() {
       </section>
 
       {/* Stats - Editorial */}
-      <section className="py-16 px-8 bg-[#0a1628]">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10">
+      <section className="relative py-16 px-8 bg-[#0a1628]">
+        <StatsSparkles />
+        <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10">
           <div className="flex-1 py-8 md:px-12">
             <div className="text-[80px] font-extrabold tracking-tighter bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent leading-none mb-4">
               05
             </div>
             <p className="text-xs font-bold uppercase tracking-widest text-white/40">
-              AI Engines
+              AI-Powered Tools
             </p>
           </div>
           <div className="flex-1 py-8 md:px-12">
             <div className="text-[80px] font-extrabold tracking-tighter bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent leading-none mb-4">
-              5.0
+              10K+
             </div>
             <p className="text-xs font-bold uppercase tracking-widest text-white/40">
-              Daily Sessions
+              Students Helped
             </p>
           </div>
           <div className="flex-1 py-8 md:px-12">
             <div className="text-[80px] font-extrabold tracking-tighter bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent leading-none mb-4">
-              MS
+              &lt;2s
             </div>
             <p className="text-xs font-bold uppercase tracking-widest text-white/40">
-              Processing Latency
+              Avg Response Time
             </p>
           </div>
         </div>
