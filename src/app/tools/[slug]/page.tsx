@@ -242,24 +242,22 @@ export default async function ToolPage({ params }: PageProps) {
           <span className="font-medium text-white/70">{tool.title}</span>
         </nav>
 
-        {/* Hero + Tool with sparkle background */}
+        {/* Hero with sparkle background */}
         <div className="relative">
           <ToolSparkles />
-          <div className="relative z-10">
-            <div className="mb-8 animate-fade-in-up text-center">
-              <div className="flex justify-center">
-                <ToolIconBadge slug={tool.slug} size="lg" />
-              </div>
-              <h1 className="mt-5 text-4xl font-bold text-white">
-                {tool.title}
-              </h1>
-              <p className="mt-3 text-lg text-white/50">{tool.description}</p>
+          <div className="relative z-10 mb-8 animate-fade-in-up text-center">
+            <div className="flex justify-center">
+              <ToolIconBadge slug={tool.slug} size="lg" />
             </div>
-
-            {/* Tool */}
-            <AITool tool={tool} />
+            <h1 className="mt-5 text-4xl font-bold text-white">
+              {tool.title}
+            </h1>
+            <p className="mt-3 text-lg text-white/50">{tool.description}</p>
           </div>
         </div>
+
+        {/* Tool */}
+        <AITool tool={tool} />
 
         {/* Examples */}
         {tool.examples.length > 0 && (
