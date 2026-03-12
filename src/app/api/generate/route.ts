@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getToolBySlug, buildPrompt } from "@/lib/prompts";
-import { PDFParse } from "pdf-parse";
 import { rateLimit } from "@/lib/rate-limit";
 import { env } from "@/lib/env";
 
@@ -9,7 +8,6 @@ const client = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
 });
 
-const MAX_PDF_SIZE = 10 * 1024 * 1024; // 10MB
 const MAX_EXTRACTED_CHARS = 50000;
 
 export async function POST(req: NextRequest) {
@@ -35,70 +33,13 @@ export async function POST(req: NextRequest) {
     let fields: Record<string, string> = {};
 
     if (contentType.includes("multipart/form-data")) {
-      // PDF upload path
-      const formData = await req.formData();
-      toolSlug = formData.get("toolSlug") as string;
-      const pdfFile = formData.get("pdf") as File | null;
-
-      if (!toolSlug || !pdfFile) {
-        return NextResponse.json(
-          { error: "Missing required fields" },
-          { status: 400 }
-        );
-      }
-
-      if (pdfFile.type !== "application/pdf") {
-        return NextResponse.json(
-          { error: "Invalid file type. Please upload a PDF." },
-          { status: 400 }
-        );
-      }
-
-      if (pdfFile.size > MAX_PDF_SIZE) {
-        return NextResponse.json(
-          { error: "File too large. Maximum size is 10MB." },
-          { status: 400 }
-        );
-      }
-
-      try {
-        const arrayBuffer = await pdfFile.arrayBuffer();
-        const parser = new PDFParse({ data: new Uint8Array(arrayBuffer) });
-        const textResult = await parser.getText();
-        input = textResult.text;
-        await parser.destroy();
-      } catch {
-        return NextResponse.json(
-          {
-            error:
-              "Could not read PDF. The file may be corrupted or password-protected.",
-          },
-          { status: 400 }
-        );
-      }
-
-      if (!input?.trim()) {
-        return NextResponse.json(
-          {
-            error:
-              "No readable text found in the PDF. It may contain only images or scanned content.",
-          },
-          { status: 400 }
-        );
-      }
-
-      if (input.length > MAX_EXTRACTED_CHARS) {
-        input = input.substring(0, MAX_EXTRACTED_CHARS);
-      }
-
-      // Extract fields (prefixed with "field_")
-      for (const [key, value] of formData.entries()) {
-        if (key.startsWith("field_")) {
-          fields[key.replace("field_", "")] = value as string;
-        }
-      }
+      // PDF upload path - temporarily disabled due to serverless compatibility
+      return NextResponse.json(
+        { error: "PDF upload is temporarily unavailable. Please paste your text directly." },
+        { status: 400 }
+      );
     } else {
-      // Existing JSON path
+      // JSON path (text input)
       const body = await req.json();
       toolSlug = body.toolSlug;
       input = body.input;
