@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { tools } from "@/lib/prompts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://learnvolt.vercel.app";
+  const baseUrl = "https://learnvolt.in";
 
   const toolPages = tools.map((tool) => ({
     url: `${baseUrl}/tools/${tool.slug}`,
